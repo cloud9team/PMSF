@@ -31,6 +31,7 @@ $libs[] = "submit/Submit.monocle_pmsf.php";
 $libs[] = "submit/Submit.monocle_mad.php";
 $libs[] = "Manual.php";
 
+
 // Include libraries
 foreach ($libs as $file) {
     include(__DIR__ . '/../lib/' . $file);
@@ -108,7 +109,7 @@ $discordUrl = "";                                                   // Discord U
 $worldopoleUrl = "";                                                // Link to Worldopole, leave "" for empty
 
 /* StatsToggle */
-$noStatsToggle = false;                                             // Enables or disables the stats button in the header.
+$noStatsToggle = true;                                             // Enables or disables the stats button in the header.
 
 /* MOTD */
 $noMotd = true;
@@ -158,7 +159,10 @@ $logFailedLogin = '';                                               // File loca
 /* Marker Settings */
 $noExcludeMinIV = true;                                        // true/false
 $noMinIV = true;                                               // true/false
-$noMinLevel = true;                                            // true/false
+$noMinLevel = true;
+$noWeatherIcons = false;
+$enableWeatherIcons = 'false';                                 // true/false
+$noWeatherShadow = true;                                            // true/false
 $noHighLevelData = true;                                       // true/false
 $noRarityDisplay = false;                                      // true/false
 $noWeatherIcons = true;
@@ -170,8 +174,8 @@ $noNotifyRarity = false;                                        // true/false
 $noNotifyIv = false;                                            // true/false
 $noNotifyLevel = false;                                         // true/false
 $noNotifyRaid = false;                                          // true/false
-$noNotifySound = false;                                         // true/false
-$noCriesSound = false;                                          // true/false
+$noNotifySound = true;                                         // true/false
+$noCriesSound = true;                                          // true/false
 $noNotifyBounce = false;                                        // true/false
 $noNotifyNotification = false;                                  // true/false
 

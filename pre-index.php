@@ -4,6 +4,12 @@ if ( ! file_exists( 'config/config.php' ) ) {
     die( "<h1>Config file missing</h1><p>Please ensure you have created your config file (<code>config/config.php</code>).</p>" );
 }
 include( 'config/config.php' );
+if ($dauth === true) {
+    if(!isset($_COOKIE["LoginCookie"])) { 
+        header('location:/user');
+        die();
+    }
+}
 $zoom        = ! empty( $_GET['zoom'] ) ? $_GET['zoom'] : null;
 $encounterId = ! empty( $_GET['encId'] ) ? $_GET['encId'] : null;
 if ( ! empty( $_GET['lat'] ) && ! empty( $_GET['lon'] ) ) {
@@ -218,7 +224,7 @@ if ( $blockIframe ) {
     <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="static/dist/css/app.min.css">
     <?php if ( file_exists( 'static/css/custom.css' ) ) {
-        echo '<link rel="stylesheet" href="static/css/custom.css">';
+        echo '<link rel="stylesheet" href="static/css/custom.css?' . time() . '">';
     } ?>
     <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css" />
@@ -1964,6 +1970,10 @@ if ( $blockIframe ) {
     var centerLat = <?= $startingLat; ?>;
     var centerLng = <?= $startingLng; ?>;
     var locationSet = <?= $locationSet; ?>;
+    var boundslatNW = <?= $boundslatNW; ?>;
+    var boundslngNW = <?= $boundslngNW; ?>;
+    var boundslatSE = <?= $boundslatSE; ?>;
+    var boundslngSE = <?= $boundslngSE; ?>;
     var motd = <?php echo $noMotd ? 'false' : 'true' ?>;
     var zoom<?php echo $zoom ? " = " . $zoom : null; ?>;
     var encounterId<?php echo $encounterId ? " = '" . $encounterId . "'" : null; ?>;
@@ -2071,6 +2081,7 @@ if ( $blockIframe ) {
     var copyrightSafe = <?php echo $copyrightSafe === true ? 'true' : 'false' ?>;
     var noRarityDisplay = <?php echo $noRarityDisplay === true ? 'true' : 'false' ?>;
     var noWeatherIcons = <?php echo $noWeatherIcons === true ? 'true' : 'false' ?>;
+    var enableWeatherIcons = <?php echo $noWeatherIcons ? 'false' : $enableWeatherIcons ?>;
     var noIvShadow = <?php echo $no100IvShadow === true ? 'true' : 'false' ?>;
     var noRaidTimer = <?php echo $noRaidTimer === true ? 'true' : 'false' ?>;
     var enableRaidTimer = <?php echo $noRaidTimer ? 'false' : $enableRaidTimer ?>;

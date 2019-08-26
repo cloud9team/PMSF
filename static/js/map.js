@@ -29,6 +29,7 @@ var $switchTinyRat
 var $switchBigKarp
 var $selectDirectionProvider
 var $switchExEligible
+var $switchWeatherIcons
 var $questsExcludePokemon
 var $questsExcludeItem
 var $selectIconStyle
@@ -72,6 +73,12 @@ var numberOfPokemon = 493
 var numberOfItem = 1405
 var L
 var map
+var bounds //add to initial vars
+var latlngs
+var boundslatNW
+var boundslngNW
+var boundslatSE
+var boundslngSE
 var markers
 var markersnotify
 var _oldlayer = 'openstreetmap'
@@ -339,6 +346,7 @@ function createServiceWorkerReceiver() {
 }
 
 function initMap() { // eslint-disable-line no-unused-vars
+    bounds = new L.LatLngBounds(new L.LatLng(boundslatNW, boundslngNW), new L.LatLng(boundslatSE, boundslngSE)); //add
     map = L.map('map', {
         center: [centerLat, centerLng],
         zoom: zoom == null ? Store.get('zoomLevel') : zoom,
@@ -349,8 +357,13 @@ function initMap() { // eslint-disable-line no-unused-vars
         worldCopyJump: true,
         updateWhenZooming: false,
         updateWhenIdle: true,
-        layers: [weatherLayerGroup, exLayerGroup, gymLayerGroup, stopLayerGroup, scanAreaGroup, nestLayerGroup]
+        layers: [weatherLayerGroup, exLayerGroup, gymLayerGroup, stopLayerGroup, scanAreaGroup, nestLayerGroup],
+        maxBounds: bounds //add
     })
+    latlngs = L.rectangle(bounds).getLatLngs(); //add
+		L.polyline(latlngs[0].concat(latlngs[0][0])).addTo(map); //add
+		map.setMaxBounds(bounds);	// Should not enter infinite recursion //add
+
 
     setTileLayer(Store.get('map_style'))
     markers = L.markerClusterGroup({
@@ -761,6 +774,7 @@ function initSidebar() {
     $('#new-portals-only-switch').val(Store.get('showNewPortalsOnly'))
     $('#new-portals-only-wrapper').toggle(Store.get('showPortals'))
     $('#ex-eligible-switch').prop('checked', Store.get('exEligible'))
+    $('#weather-icon-switch').prop('checked', Store.get('showWeatherIcons'))
     $('#gyms-filter-wrapper').toggle(Store.get('showGyms'))
     $('#team-gyms-only-switch').val(Store.get('showTeamGymsOnly'))
     $('#open-gyms-only-switch').prop('checked', Store.get('showOpenGymsOnly'))
@@ -958,15 +972,14 @@ function pokemonLabel(item) {
             '<div>' + i8ln('CP') + ': <b>' + cp + '</b> | ' + i8ln('Level') + ': <b>' + pokemonLevel + '</b></div>' +
             '</div><br>' +
             '<div style="position:absolute;top:125px;">' +
-            '<div>' + i8ln('Quick') + ': <b>' + pMove1 + '</b>' + pMoveType1 + '</div>' +
-            '<div>' + i8ln('Charge') + ': <b>' + pMove2 + '</b>' + pMoveType2 + '</div>' +
+            '<div><b>' + pMoveType1 + ' ' + pMove1 + ' | ' + pMoveType2 + ' ' + pMove2 + '</b></div>' +
             '<div>' + i8ln('Weight') + ': <b>' + weight.toFixed(2) + 'kg</b>' + ' | ' + i8ln('Height') + ': <b>' + height.toFixed(2) + 'm</b></div>' +
             '</div>'
     }
 
     if (weatherBoostedCondition !== 0) {
         details +=
-            '<img style="height:30px;position:absolute;top:25px;left:0px;" src="static/weather/i-' + weatherBoostedCondition + '.png" style="height:15px;"></div>'
+            '<img style="height:30px;position:absolute;top:35px;left:10px;" src="static/weather/i-' + weatherBoostedCondition + '.png" style="height:15px;"></div>'
     }
 
     var contentstring =
@@ -3591,7 +3604,7 @@ function convertPokestopData(event) { // eslint-disable-line no-unused-vars
                 },
                 error: function error() {
                     // Display error toast
-                    toastr['error'](i8ln('Pokéstop ID got lost somewhere.'), i8ln('Error converting Pokéstop'))
+                    toastr['error'](i8ln('Pokestop ID got lost somewhere.'), i8ln('Error converting Pokestop'))
                     toastr.options = toastrOptions
                 },
                 complete: function complete() {
@@ -4376,7 +4389,7 @@ function openQuestModal(event) { // eslint-disable-line no-unused-vars
 
         var $pokeCatchList = $('.quest-modal #pokeCatchList')
         $pokeCatchList.select2({
-            placeholder: i8ln('Pokémon'),
+            placeholder: i8ln('Pokemon'),
             data: pokeList,
             multiple: true,
             maximumSelectionSize: 2
@@ -4384,7 +4397,7 @@ function openQuestModal(event) { // eslint-disable-line no-unused-vars
 
         var $pokemonTypes = $('.quest-modal #typeCatchList')
         $pokemonTypes.select2({
-            placeholder: i8ln('Pokémon type'),
+            placeholder: i8ln('Pokemon type'),
             minimumResultsForSearch: Infinity,
             multiple: true,
             maximumSelectionSize: 3
@@ -4493,7 +4506,7 @@ function openQuestModal(event) { // eslint-disable-line no-unused-vars
 
         var $pokeQuestList = $('.quest-modal #pokeQuestList')
         $pokeQuestList.select2({
-            placeholder: i8ln('Pokémon encounter'),
+            placeholder: i8ln('Pokemon encounter'),
             closeOnSelect: true,
             maximumSelectionSize: 1
         })
@@ -5457,7 +5470,7 @@ function updateS2Overlay() {
             showS2Cells(17, {color: 'blue'})
         } else if (Store.get('showStopCells') && (map.getZoom() <= 14)) {
             stopLayerGroup.clearLayers()
-            toastr['error'](i8ln('Zoom in more to show them.'), i8ln('Pokéstop cells are currently hidden'))
+            toastr['error'](i8ln('Zoom in more to show them.'), i8ln('Pokestop cells are currently hidden'))
             toastr.options = toastrOptions
         }
     }
