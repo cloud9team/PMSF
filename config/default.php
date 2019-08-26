@@ -164,8 +164,6 @@ $noNotifyRarity = false;                                        // true/false
 $noNotifyIv = false;                                            // true/false
 $noNotifyLevel = false;                                         // true/false
 $noNotifyRaid = false;                                          // true/false
-$noNotifySound = true;                                         // true/false
-$noCriesSound = true;                                          // true/false
 $noNotifyBounce = false;                                        // true/false
 $noNotifyNotification = false;                                  // true/false
 
@@ -267,8 +265,6 @@ $notifyRarity = '[]';                                               // "Common",
 $notifyIv = '""';                                                   // "" for empty or a number
 $notifyLevel = '""';                                                // "" for empty or a number
 $notifyRaid = 5;                                                    // O to disable
-$notifySound = 'false';                                             // true/false
-$criesSound = 'false';                                              // true/false
 $notifyBounce = 'true';                                             // true/false
 $notifyNotification = 'true';                                       // true/false
 

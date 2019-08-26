@@ -118,8 +118,6 @@ var lastWeatherUpdateTime
 
 var token
 
-var cries
-
 var pokeList = []
 var raidBoss = {} // eslint-disable-line no-unused-vars
 var questList = []
@@ -130,7 +128,6 @@ var rewardtypeList = []
 var conditiontypeList = []
 var gymId
 
-var assetsPath = 'static/sounds/'
 var iconpath = null
 
 var gymTypes = ['Uncontested', 'Mystic', 'Valor', 'Instinct']
@@ -155,8 +152,6 @@ var toastrOptions = {
     'showMethod': 'fadeIn',
     'hideMethod': 'fadeOut'
 }
-
-createjs.Sound.registerSound('static/sounds/ding.mp3', 'ding')
 
 var pokemonTypes = [i8ln('unset'), i8ln('Normal'), i8ln('Fighting'), i8ln('Flying'), i8ln('Poison'), i8ln('Ground'), i8ln('Rock'), i8ln('Bug'), i8ln('Ghost'), i8ln('Steel'), i8ln('Fire'), i8ln('Water'), i8ln('Grass'), i8ln('Electric'), i8ln('Psychic'), i8ln('Ice'), i8ln('Dragon'), i8ln('Dark'), i8ln('Fairy')]
 var genderType = ['♂', '♀', '⚲']
@@ -812,10 +807,6 @@ function initSidebar() {
     $('#nest-polygon-switch').prop('checked', Store.get('showNestPolygon'))
     $('#raid-timer-switch').prop('checked', Store.get('showRaidTimer'))
     $('#rocket-timer-switch').prop('checked', Store.get('showRocketTimer'))
-    $('#sound-switch').prop('checked', Store.get('playSound'))
-    $('#cries-switch').prop('checked', Store.get('playCries'))
-    $('#cries-switch-wrapper').toggle(Store.get('playSound'))
-    $('#cries-type-filter-wrapper').toggle(Store.get('playCries'))
     $('#bounce-switch').prop('checked', Store.get('remember_bounce_notify'))
     $('#notification-switch').prop('checked', Store.get('remember_notification_notify'))
 
@@ -1769,7 +1760,6 @@ function customizePokemonMarker(marker, item, skipNotification) {
 
     if (notifiedPokemon.indexOf(item['pokemon_id']) > -1 || notifiedRarity.indexOf(item['pokemon_rarity']) > -1) {
         if (!skipNotification) {
-            checkAndCreateSound(item['pokemon_id'])
             sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png', item['latitude'], item['longitude'])
         }
         if (marker.animationDisabled !== true && Store.get('remember_bounce_notify')) {
@@ -1781,7 +1771,6 @@ function customizePokemonMarker(marker, item, skipNotification) {
         var perfection = getIv(item['individual_attack'], item['individual_defense'], item['individual_stamina'])
         if (notifiedMinPerfection > 0 && perfection >= notifiedMinPerfection) {
             if (!skipNotification) {
-                checkAndCreateSound(item['pokemon_id'])
                 sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png', item['latitude'], item['longitude'])
             }
             if (marker.animationDisabled !== true && Store.get('remember_bounce_notify')) {
@@ -1794,7 +1783,6 @@ function customizePokemonMarker(marker, item, skipNotification) {
         var level = item['level']
         if (notifiedMinLevel > 0 && level >= notifiedMinLevel) {
             if (!skipNotification) {
-                checkAndCreateSound(item['pokemon_id'])
                 sendNotification(getNotifyText(item).fav_title, getNotifyText(item).fav_text, iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + '.png', item['latitude'], item['longitude'])
             }
             if (marker.animationDisabled !== true && Store.get('remember_bounce_notify')) {
@@ -1961,7 +1949,6 @@ function setupGymMarker(item) {
             }
 
             icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png'
-            checkAndCreateSound(item.raid_pokemon_id)
         } else if (item.raid_start <= Date.now()) {
             var hatchedEgg = ''
             if (item['raid_level'] <= 2) {
@@ -1982,7 +1969,6 @@ function setupGymMarker(item) {
                 raidEgg = 'legendary'
             }
             icon = 'static/raids/egg_' + raidEgg + '.png'
-            checkAndCreateSound()
         }
         sendNotification(title, text, icon, item['latitude'], item['longitude'])
     }
@@ -2023,7 +2009,6 @@ function updateGymMarker(item, marker) {
                     pokemonidStr = pokemonid
                 }
                 icon = iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + '.png'
-                checkAndCreateSound(item.raid_pokemon_id)
             } else if (item.raid_start <= Date.now()) {
                 var hatchedEgg = ''
                 if (item['raid_level'] <= 2) {
@@ -2035,7 +2020,6 @@ function updateGymMarker(item, marker) {
                 }
                 icon = 'static/raids/egg_' + hatchedEgg + '.png'
             } else {
-                checkAndCreateSound()
                 var raidEgg = ''
                 if (item['raid_level'] <= 2) {
                     raidEgg = 'normal'
@@ -5867,20 +5851,6 @@ function createUpdateWorker() {
     }
 }
 
-
-function fetchCriesJson() {
-    $.ajax({
-        'global': false,
-        'url': 'static/dist/data/cries.min.json',
-        'dataType': 'json',
-        'success': function (data) {
-            cries = data
-            createjs.Sound.alternateExtensions = ['mp3']
-            createjs.Sound.registerSounds(cries, assetsPath)
-        }
-    })
-}
-
 function pokemonSubmitFilter(event) { // eslint-disable-line no-unused-vars
     var img = $(event.target).parent()
     var cont = img.parent().parent().parent()
@@ -6026,9 +5996,6 @@ $(function () {
 })
 
 $(function () {
-    if (Store.get('playCries')) {
-        fetchCriesJson()
-    }
     // load MOTD, if set
     if (motd) {
         $.ajax({
@@ -6872,34 +6839,6 @@ $(function () {
         }
     })
 
-    $('#sound-switch').change(function () {
-        Store.set('playSound', this.checked)
-        var options = {
-            'duration': 500
-        }
-        var wrapper = $('#cries-switch-wrapper')
-        if (this.checked) {
-            wrapper.show(options)
-        } else {
-            wrapper.hide(options)
-        }
-    })
-
-    $('#cries-switch').change(function () {
-        var wrapper = $('#cries-type-filter-wrapper')
-        var options = {
-            'duration': 500
-        }
-        if (this.checked) {
-            wrapper.show(options)
-        } else {
-            wrapper.hide(options)
-        }
-        Store.set('playCries', this.checked)
-        if (this.checked) {
-            fetchCriesJson()
-        }
-    })
 
     $('#bounce-switch').change(function () {
         Store.set('remember_bounce_notify', this.checked)
@@ -7007,13 +6946,4 @@ function openFile(event) { // eslint-disable-line no-unused-vars
     reader.readAsText(input.files[0])
 }
 
-function checkAndCreateSound(pokemonId = 0) {
-    if (Store.get('playSound')) {
-        if (!Store.get('playCries') || pokemonId === 0) {
-            createjs.Sound.play('ding')
-        } else {
-            createjs.Sound.play(pokemonId)
-        }
-    }
-}
 //

@@ -304,16 +304,6 @@ var StoreOptions = {
             default: enableNestPolygon,
             type: StoreTypes.Boolean
         },
-    'playSound':
-        {
-            default: notifySound,
-            type: StoreTypes.Boolean
-        },
-    'playCries':
-        {
-            default: criesSound,
-            type: StoreTypes.Boolean
-        },
     'geoLocate':
         {
             default: false,

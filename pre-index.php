@@ -1106,7 +1106,7 @@ if ( $blockIframe ) {
             }
             ?>
             <?php
-            if ( ! $noNotifyPokemon || ! $noNotifyRarity || ! $noNotifyIv || ! $noNotifyLevel || ! $noNotifySound || ! $noNotifyRaid || ! $noNotifyBounce || ! $noNotifyNotification ) {
+            if ( ! $noNotifyPokemon || ! $noNotifyRarity || ! $noNotifyIv || ! $noNotifyLevel || ! $noNotifyRaid || ! $noNotifyBounce || ! $noNotifyNotification ) {
                 echo '<h3>' . i8ln( 'Notification' ) . '</h3>
             <div>';
             }
@@ -1174,40 +1174,6 @@ if ( $blockIframe ) {
             }
             ?>
             <?php
-            if ( ! $noNotifySound ) {
-                echo '<div class="form-control switch-container">
-                <h3>' . i8ln( 'Notify with sound' ) . '</h3>
-                <div class="onoffswitch">
-                    <input id="sound-switch" type="checkbox" name="sound-switch" class="onoffswitch-checkbox"
-                           checked>
-                    <label class="onoffswitch-label" for="sound-switch">
-                        <span class="switch-label" data-on="On" data-off="Off"></span>
-                        <span class="switch-handle"></span>
-                    </label>
-                </div>';
-            }
-            ?>
-            <?php
-            if ( ! $noCriesSound ) {
-                echo '<div class="form-control switch-container" id="cries-switch-wrapper">
-                <h3>' . i8ln( 'Use Pokémon cries' ) . '</h3>
-                <div class="onoffswitch">
-                    <input id="cries-switch" type="checkbox" name="cries-switch" class="onoffswitch-checkbox"
-                           checked>
-                    <label class="onoffswitch-label" for="cries-switch">
-                        <span class="switch-label" data-on="On" data-off="Off"></span>
-                        <span class="switch-handle"></span>
-                    </label>
-                </div>
-            </div>';
-            }
-            ?>
-            <?php
-            if ( ! $noNotifySound ) {
-                echo '</div>';
-            }
-            ?>
-            <?php
             if ( ! $noNotifyBounce ) {
                 echo '<div class="form-control switch-container">
                 <h3>' . i8ln( 'Bounce' ) . '</h3>
@@ -1238,7 +1204,7 @@ if ( $blockIframe ) {
             }
             ?>
             <?php
-            if ( ! $noNotifyPokemon || ! $noNotifyRarity || ! $noNotifyIv || ! $noNotifyLevel || ! $noNotifySound || ! $noNotifyRaid || ! $noNotifyBounce || ! $noNotifyNotification ) {
+            if ( ! $noNotifyPokemon || ! $noNotifyRarity || ! $noNotifyIv || ! $noNotifyLevel || ! $noNotifyRaid || ! $noNotifyBounce || ! $noNotifyNotification ) {
                 echo '</div>';
             }
             ?>
@@ -1952,7 +1918,6 @@ if ( $blockIframe ) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.1/js/select2.full.min.js"></script>
 <script src="node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
 <script src="node_modules/moment/min/moment-with-locales.min.js"></script>
-<script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
 <script src="node_modules/push.js/bin/push.min.js"></script>
 <script src="node_modules/long/src/long.js"></script>
 <script src="node_modules/leaflet/dist/leaflet.js"></script>
@@ -2021,8 +1986,6 @@ if ( $blockIframe ) {
     var enableRanges = <?php echo $noRanges ? 'false' : $enableRanges ?>;
     var enableScanPolygon = <?php echo $noScanPolygon ? 'false' : $enableScanPolygon ?>;
     var geoJSONfile = '<?php echo $noScanPolygon ? '' : $geoJSONfile ?>';
-    var notifySound = <?php echo $noNotifySound ? 'false' : $notifySound ?>;
-    var criesSound = <?php echo $noCriesSound ? 'false' : $criesSound ?>;
     var enableStartMe = <?php echo $noStartMe ? 'false' : $enableStartMe ?>;
     var enableStartLast = <?php echo ( ! $noStartLast && $enableStartMe === 'false' ) ? $enableStartLast : 'false' ?>;
     var enableFollowMe = <?php echo $noFollowMe ? 'false' : $enableFollowMe ?>;
