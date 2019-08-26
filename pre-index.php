@@ -1970,6 +1970,7 @@ if ( $blockIframe ) {
     var centerLat = <?= $startingLat; ?>;
     var centerLng = <?= $startingLng; ?>;
     var locationSet = <?= $locationSet; ?>;
+    var initialZoom = <?php echo $startingZoom; ?>;
     var boundslatNW = <?= $boundslatNW; ?>;
     var boundslngNW = <?= $boundslngNW; ?>;
     var boundslatSE = <?= $boundslatSE; ?>;

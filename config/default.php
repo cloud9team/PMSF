@@ -12,23 +12,13 @@ session_start();
 require_once(__DIR__ . '/../utils.php');
 
 $libs[] = "Scanner.php";
-$libs[] = "Monocle.php";
-$libs[] = "Monocle_PMSF.php";
-$libs[] = "Monocle_MAD.php";
 $libs[] = "RDM.php";
 $libs[] = "RDM_beta.php";
-$libs[] = "RocketMap.php";
-$libs[] = "RocketMap_MAD.php";
 $libs[] = "search/Search.php";
 $libs[] = "search/Search.rdm.php";
-$libs[] = "search/Search.monocle_pmsf.php";
-$libs[] = "search/Search.monocle_mad.php";
-$libs[] = "search/Search.rocketmap_mad.php";
 $libs[] = "submit/Submit.php";
 $libs[] = "submit/Manual.php";
 $libs[] = "submit/Submit.rdm.php";
-$libs[] = "submit/Submit.monocle_pmsf.php";
-$libs[] = "submit/Submit.monocle_mad.php";
 $libs[] = "Manual.php";
 
 
@@ -46,7 +36,7 @@ setSessionCsrfToken();
 
 $startingLat = 52.084992;                                          // Starting latitude
 $startingLng = 5.302366;                                        // Starting longitude
-
+$startingZoom = 15;
 /* Zoom and Cluster Settings */
 
 $maxLatLng = 1;                                                     // Max latitude and longitude size (1 = ~110km, 0 to disable)
