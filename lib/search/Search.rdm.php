@@ -18,7 +18,7 @@ class RDM extends Search
         $prewardsjson = json_decode( $pjson, true );
         $presids = array();
         foreach ($prewardsjson as $p => $preward) {
-            if( $p > 493){
+            if( $p > 649){
                 break;
             }
             if (strpos(strtolower(i8ln($preward['name'])), strtolower($term)) !== false) {
@@ -87,7 +87,7 @@ class RDM extends Search
         $mons = json_decode( $json, true );
         $resids = [];
         foreach ($mons as $k => $mon) {
-            if ( $k > 493) {
+            if ( $k > 694) {
                 break;
             }
             if (strpos(strtolower(i8ln($mon['name'])), strtolower($term)) !== false) {
